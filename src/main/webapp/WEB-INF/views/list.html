@@ -1,0 +1,68 @@
+<html>
+<head>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#addRow").click(function(){
+			$("#inputBox").append("<input type='file' name='file'>");
+			$("#inputBox > div:last > div:last")
+			.append("<button class='btn btn-danger removeBtn' type='button'>Remove</button>");
+			$("#inputBox > div:last > div:last > .removeBtn:first").click(function(){
+				$(this).parent().parent().remove();
+				if($("#inputBox").height()<=166 && $("#inputBox").hasClass("pre-scrollable")) $("#inputBox").removeClass("pre-scrollable");
+			})
+			$(":file").filestyle();
+			if($("#inputBox").height()>166 && !$("#inputBox").hasClass("pre-scrollable")) $("#inputBox").addClass("pre-scrollable");
+		});
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>
+<script>
+	function add() {
+		$("form#form").submit(function(){
+
+		    var formData = new FormData($(this)[0]);
+		    var files = $('#upload-files').prop('files');
+		    for(var i=0;i<files.length;i++){
+		        ajaxData.append('file['+i+']', files[i]);
+		    }
+		    formData.append("file", files);
+		    $.ajax({
+		        url: window.location.pathname,
+		        type: 'POST',
+		        data: formData,
+		        async: false,
+		        success: function (data) {
+		            alert(data)
+		        },
+		        cache: false,
+		        contentType: false,
+		        processData: false
+		    });
+
+		    return false;
+		});
+	}
+</script>
+</head>
+<body>
+	<form id="form" action="upload2" method="post"
+		enctype="multipart/form-data">
+		<div id="scrollContainer">
+		<div id="inputBox">
+		<input type="file" name="file" multiple id="upload-files">
+		</div>
+		<button class="btn btn-success" id="addRow" type="button">Add</button>
+		</div>
+		<input type="file" name="file1" >
+		 <input type="text" name="name">
+		 <input type="text" name="address">
+		<input type="submit">
+	</form>
+	<img th:src="resources14815113764899.jpg" alt="">
+						</figure>
+</body>
+
+</html>

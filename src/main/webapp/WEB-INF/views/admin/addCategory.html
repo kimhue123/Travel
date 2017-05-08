@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" type="text/css" href="../csss/styles.css" media="screen" />
+</head>
+<body>
+<div th:replace="admin/header::header"></div>
+	<div class="grid_12">
+
+	<div class="module">
+		 <h2><span>Thêm Danh mục</span></h2>
+			
+		 <div class="module-body">
+			<form th:action="@{addCat}" th:object="${category}" method="post">
+				<p>
+					<label>Name </label>
+					<input type="text" th:field="*{name}" value=""  />
+				</p>
+				<p>
+					<label>Mô tả</label>
+					<textarea name="content" value="" rows="7" cols="90" class="input-medium"></textarea>
+				</p>
+				<fieldset>
+					<input class="submit-green" type="submit" value="Thêm" /> 
+				</fieldset>
+				
+			</form>
+		 </div> <!-- End .module-body -->
+
+	</div>  <!-- End .module -->
+	<div style="clear:both;"></div>
+</div> <!-- End .grid_12 -->
+</body>
+</html>

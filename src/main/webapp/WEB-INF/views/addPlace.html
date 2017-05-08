@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home travel</title>
+<meta charset="UTF-8">
+<link
+	href='http://fonts.googleapis.com/css?family=Belgrano|Courgette&subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="css/bootstrap.css" rel="stylesheet">
+<!-- Loading main css file -->
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="style.css">
+<!--Bootshape-->
+<link href="css/bootshape.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
+<style type="text/css">
+#title h4 {
+	padding: 5px;
+	background-color: lavender;
+	border: 1px solid darkcyan;
+}
+
+#importData {
+	margin-top: 20px;
+	padding: 30px;
+	border: 1px solid darkcyan;
+}
+
+#scrollContainer {
+	padding: 20px;
+}
+
+#inputBox {
+	max-height: 167px;
+}
+
+#inputBox>div.row {
+	margin: 10px 0;
+}
+
+#formAction {
+	margin-top: 5px;
+	padding: 20px;
+}
+
+#viewData {
+	margin-top: 20px;
+	padding: 30px;
+	border: 1px solid darkcyan;
+}
+
+button {
+	width: 100%;
+}
+
+.tooltip>.tooltip-inner {
+	max-width: 100%;
+}
+
+h3 {
+	color: #c78a78;
+}
+#map {
+	margin-top: 50px;
+	height: 400px;
+	width: 45%;
+	margin-left: 650px;
+}
+</style>
+
+<!--Google Fonts-->
+
+<script>
+	function add(){
+		$("form#add").submit(function(){
+		    var formData = new FormData($(this)[0]);
+		    $.ajax({
+		        url: 'savePlace',
+		        type: 'POST',
+		        data: formData,
+		        async: true,
+		        success: function (data) {
+		        	 alert('xxxx');
+		        },
+		        cache: false,
+		        contentType: false,
+		        processData: false,
+		        complete: function (data) {
+		        	window.location="index";
+		        }
+		        
+		        
+		    });
+
+		    return false;
+		});
+	}
+</script>
+</head>
+<body>
+
+
+<div th:replace="header::header"></div>
+
+
+
+<main class="content">
+<div class="fullwidth-block">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 wow fadeInLeft">
+				<form id="add" action="savePlace"  class="contact-form" method="POST" enctype="multipart/form-data">
+					<input id="name" name="name" type="text"
+						placeholder="name place..."> 
+						<select id="select" name="select">
+						<option th:each="category:${category}" th:value="${category.id}" th:text="${category.name}"></option>
+					 </select> 
+					 <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server" > 
+					<input id="submit" type="button" value="Geocode" style=" width: 141px; margin-left: 300px;background-color: aliceblue">
+   
+    
+					<textarea name="content" id="content" placeholder="detail">
+					</textarea>
+					<input name="file"  class="filestyle" type="file"
+						required="true" />
+					 <h3>Do you want create album</h3>
+					
+						<div id="scrollContainer">
+							 <div id="inputBox">
+								<!--  <div class="row">
+									<div class="col-md-9">
+										<input  class="filestyle" type="file" name="files"
+											/>
+										<textarea style="margin-top: 10px" name="detail"
+											class="filestyle" value=" "></textarea>
+									</div>
+								</div> -->
+							</div> 
+							<div id="formAction">
+								<div class="col-md-3">
+									<button class="btn btn-success" id="addRow" type="button">Add</button>
+								</div>
+							</div>
+						</div> 
+						<input type="hidden" id="cityLat" name="cityLat" />
+<input type="hidden" id="cityLng" name="cityLng" />
+					<input type="submit"  class="button"  value="Send">
+					</form>
+				</div>
+				
+			<div id="map"></div>
+		</div>
+
+		 
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: -34.397, lng: 150.644}
+        });
+        var geocoder = new google.maps.Geocoder();
+
+        document.getElementById('submit').addEventListener('click', function() {
+        	geocodeAddress(geocoder, map);
+        });
+      }
+      
+
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('searchTextField').value;
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+            });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+      }
+    </script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD3t6ABF_xVAEORmlewxajxy__YiR6_Q9g&libraries=places&callback=initMap" type="text/javascript"></script>
+    <!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3t6ABF_xVAEORmlewxajxy__YiR6_Q9g&libraries=places&callback=initMap">
+    </script> -->
+		</div>
+	</div>
+</main>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#addRow").click(function(){
+			$("#inputBox").append("<div id='inputBox'> <div class='row'><div class='col-md-9'><input name='files' class='filestyle' type='file' required='true'/> <textarea  style='margin-top: 10px' name='detail'  class='filestyle' ></textarea></div></div></div>")
+			$("#inputBox > div:last").append("<div class='col-md-3'></div>");
+			$("#inputBox > div:last > div:last")
+			.append("<button class='btn btn-danger removeBtn' type='button'>Remove</button>");
+			$("#inputBox > div:last > div:last > .removeBtn:first").click(function(){
+				$(this).parent().parent().remove();
+				if($("#inputBox").height()<=166 && $("#inputBox").hasClass("pre-scrollable")) $("#inputBox").removeClass("pre-scrollable");
+			})
+		});
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>
+<script type="text/javascript">
+    function initialize() {
+        var input = document.getElementById('searchTextField');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            document.getElementById('cityLat').value = place.geometry.location.lat();
+            document.getElementById('cityLng').value = place.geometry.location.lng();
+            //alert("This function is working!");
+            //alert(place.name);
+           // alert(place.address_components[0].long_name);
+
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize); 
+</script>
+<div th:replace="javascript::javascript">
+
+</div>
+</body>
+</html>

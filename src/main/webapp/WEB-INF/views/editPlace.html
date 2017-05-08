@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home travel</title>
+<meta charset="UTF-8">
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!--Google Fonts-->
+<link
+	href='http://fonts.googleapis.com/css?family=Belgrano|Courgette&subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link href="fonts/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+<!-- Loading main css file -->
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="style.css">
+
+<!--Bootshape-->
+<link href="css/bootshape.css" rel="stylesheet">
+<style type="text/css">
+#title h4 {
+	padding: 5px;
+	background-color: lavender;
+	border: 1px solid darkcyan;
+}
+
+#importData {
+	margin-top: 20px;
+	padding: 30px;
+	border: 1px solid darkcyan;
+}
+
+#scrollContainer {
+	padding: 20px;
+}
+
+#inputBox {
+	max-height: 167px;
+}
+
+#inputBox>div.row {
+	margin: 10px 0;
+}
+
+#formAction {
+	margin-top: 5px;
+	padding: 20px;
+}
+
+#viewData {
+	margin-top: 20px;
+	padding: 30px;
+	border: 1px solid darkcyan;
+}
+
+button {
+	width: 100%;
+}
+
+.tooltip>.tooltip-inner {
+	max-width: 100%;
+}
+
+h3 {
+	color: #c78a78;
+}
+#map {
+	margin-top: 50px;
+	height: 400px;
+	width: 45%;
+	margin-left: 650px;
+}
+</style>
+
+</head>
+<body>
+
+
+
+<div th:replace="header::header"></div>
+<div th:replace="javascript::javascript">
+
+</div>
+
+<!--Google Fonts-->
+<script>
+	function add(){
+		$("form#add").submit(function(){
+
+		    var formData = new FormData($(this)[0]);
+
+		    $.ajax({
+		        url: window.location.pathname,
+		        type: 'POST',
+		        data: formData,
+		        async: false,
+		        success: function (data) {
+		            console.log(data);
+		        },
+		        cache: false,
+		        contentType: false,
+		        processData: false
+		    });
+
+		    return false;
+		});
+	}
+</script>
+	<main class="content">
+	<div class="fullwidth-block">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4 wow fadeInLeft">
+					<form id="add" action="edit" class="contact-form"
+						method="POST" enctype="multipart/form-data">
+						<input id="id" name="id" type="hidden" th:value="${place.id}"
+							> 
+						<input id="name" name="name" type="text" th:value="${place.name}"
+							placeholder="name place..."> 
+							<select id="select" name="select">
+							<div th:each="category:${category}">
+								<div th:if="${place.category.id} == ${category.id}">
+									<option selected th:value="${category.id}"
+										th:text="${category.name}"></option>
+								</div>
+								<div th:if="${place.category.id} != ${category.id}">
+									<option th:value="${category.id}" th:text="${category.name}"></option>
+								</div>
+							</div>
+						</select> <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server"
+							th:value="${place.address}">
+							<input id="submit" type="button" value="Geocode" style=" width: 141px; margin-left: 300px;background-color: aliceblue">
+						<textarea name="content" id="content" th:text="${place.content}"
+							placeholder="detail">
+					</textarea>
+						<img th:src="@{/upload/{name}(name=${place.image.name})}" alt=""
+							style="width: 440px;"> <input name="file" class="filestyle"
+							type="file"  />
+						<h3>Album</h3>
+
+						<div class="row" style="width: 1200px;">
+							<div class="col-md-6" th:each="detail:${listdetail}">
+								<div class="team wow fadeInRight">
+									<figure class="team-image">
+										<img th:src="@{/upload/{name}(name=${detail.image.name})}" alt="">
+									</figure>
+									<input class="filestyle" type="file" name="fileOld"
+										style="width: 350px;" />
+									<textarea style="margin-top: 10px; width: 400px;" name="detailOld"
+										th:text="${detail.content}" value="" class="filestyle"></textarea>
+
+								</div>
+							</div>
+							<div th:each="detail:${listdetailempty}">
+							<input type="hidden" name ="detailOld" value="">
+							</div>
+						</div>
+						<div id="scrollContainer" style="margin-top: 50px;">
+								<h3>Ban muon them hinh anh cua nhom</h3>
+								<div id="inputBox">
+									<div class="row">
+										<div class="col-md-9">
+											<input style="width: 500px" class="filestyle" type="file"
+												name="files" />
+											<textarea style="margin-top: 10px; width: 500px"
+												name="detail" class="filestyle" value=" "></textarea>
+										</div>
+									</div>
+								</div>
+								<div id="formAction">
+									<div class="col-md-3">
+										<button style="width: 100px" class="btn btn-success"
+											id="addRow" type="button">Add</button>
+									</div>
+								</div>
+							</div>
+						<input id="lat" name ="lat" type="hidden" th:value="${place.lat}"> <input
+				id="lng" name="lng" type="hidden" th:value="${place.lng}">
+						<input type="submit" id="submit" class="button" value="Send">
+					</form>
+				</div>
+				<div id="map"></div>
+			</div>
+
+			<!-- <div id="floating-panel">
+					<input id="address" type="textbox" value="Sydney, NSW"> <input
+						id="submit" type="button" value="Geocode">
+				</div>
+				 -->
+							
+			<script>
+			function initMap() {
+		        var map = new google.maps.Map(document.getElementById('map'), {
+		          zoom: 8,
+		          center: {lat: -34.397, lng: 150.644}
+		        });
+		        var geocoder = new google.maps.Geocoder();
+
+		        document.getElementById('submit').addEventListener('click', function() {
+		        	geocodeAddress(geocoder, map);
+		        });
+		      }
+			
+			function geocodeAddress(geocoder, resultsMap) {
+		        var address = document.getElementById('searchTextField').value;
+		        geocoder.geocode({'address': address}, function(results, status) {
+		          if (status === 'OK') {
+		            resultsMap.setCenter(results[0].geometry.location);
+		            var marker = new google.maps.Marker({
+		              map: resultsMap,
+		              position: results[0].geometry.location
+		            });
+		          } else {
+		            alert('Geocode was not successful for the following reason: ' + status);
+		          }
+		        });
+		      }
+    </script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD3t6ABF_xVAEORmlewxajxy__YiR6_Q9g&libraries=places&callback=initMap" type="text/javascript"></script>
+		</div>
+	</div>
+
+	</main>
+	<script type="text/javascript">
+    function initialize() {
+        var input = document.getElementById('searchTextField');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            document.getElementById('lat').value = place.geometry.location.lat();
+            document.getElementById('lng').value = place.geometry.location.lng();
+            //alert("This function is working!");
+            //alert(place.name);
+           // alert(place.address_components[0].long_name);
+
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize); 
+</script>
+<div th:replace="javascript::javascript">
+</body>
+
+</html>

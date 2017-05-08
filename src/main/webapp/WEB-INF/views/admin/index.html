@@ -1,0 +1,34 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title> Admin template</title>
+        <link rel="stylesheet" type="text/css" href="../csss/styles.css" media="screen" />
+	</head>
+	<body>
+    	<!-- Header -->
+        <div th:replace="admin/header::header"></div>
+		<div class="container_12">    
+<!-- Dashboard icons -->
+
+<div class="grid_main_l">
+	<a href="addNews.jsp" class="dashboard-module">
+		<img src="../images/Crystal_Clear_write.gif" width="64" height="64" alt="edit" />
+		<span>Xem danh sách report</span>
+	</a>
+	
+	<a href="addCat" class="dashboard-module">
+		<img src="../images/Crystal_Clear_files.gif" width="64" height="64" alt="edit" />
+		<span>Thêm Danh mục</span>
+	</a>
+	<div style="clear: both"></div>
+</div> <!-- End .grid_7 -->
+
+<!-- Account overview -->
+<div class="grid_main_r">
+	<div class="module">
+		
+	</div>
+	<div style="clear:both;"></div>
+	<div class="padding-bottom"></div>
+</div> <!-- End .grid_5 -->

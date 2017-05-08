@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home travel</title>
+<meta charset="UTF-8">
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!--Google Fonts-->
+<link
+	href='http://fonts.googleapis.com/css?family=Belgrano|Courgette&subset=latin,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link href="fonts/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+<!-- Loading main css file -->
+<link rel="stylesheet" href="css/animate.min.css">
+<link rel="stylesheet" href="style.css">
+
+<!--Bootshape-->
+<link href="css/bootshape.css" rel="stylesheet">
+
+</head>
+<body>
+<div th:replace="javascript::javascript">
+
+</div>
+<div th:replace="header::header"></div>
+	<main class="content">
+	<div class="fullwidth-block">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7 wow fadeInLeft">
+					<h2 class="section-title" th:text="${place.name}"></h2>
+					<figure>
+						<img th:src="@{/upload/{name}(name=${place.image.name})}" alt="">
+					</figure>
+
+					<p style="" th:text="${place.content}"></p>
+
+					<!-- <p>Iron Man, Thor, Captain America and the rest of Earths Mightiest Heroes unite to stand against the threats none can face alone. See the Avengers go up against Ultron, Kang, the Masters of Evil and more over three decades of epic action. This is where youll find all the big-time action, major storylines and iconic Spider-Man magic youd come to expect from the Wall-Crawler. Meet all of Spideys deadly enemies, from the Green Goblin and Doctor Octopus to Venom and Carnage, plus see Peter Parker fall in love, face tragedy and triumph, and learn that with great power comes great responsibility.</p>
+
+								<p>Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk. Avengers Assemble. Featuring the work of Kurt Busiek, George Perez and other quintessential Avengers creators. Earths Mightiest Heroes reunite with their biggest guns at the forefront to take on familiar enemies and new threats alike.</p> -->
+				</div>
+				<input id="lat" type="hidden" th:value="${place.lat}"> <input
+					id="lng" type="hidden" th:value="${place.lng}">
+				<style>
+					#map {
+					margin-top:120px;
+					height: 400px;
+					 width: 35%;
+   					 margin-left: 800px;
+					}
+				</style>
+				<div id="map"></div>
+				<script>
+					function initMap() {
+						var lat = document.getElementById('lat').value;
+						var latn = parseInt(lat);
+						var lng = document.getElementById('lng').value;
+						var lngn = parseInt(lng);
+						console.log(lngn)
+						var uluru = {
+							lat : latn,
+							lng : lngn
+						};
+						console.log(uluru);
+						var map = new google.maps.Map(document
+								.getElementById('map'), {
+							zoom : 4,
+							center : uluru
+						});
+						var marker = new google.maps.Marker({
+							position : uluru,
+							map : map
+						});
+					}
+				</script>
+				<script async defer
+					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3dyg71Ox4WUW5x-lzH02hhuecdUeAHnM&callback=initMap">
+					
+				</script>
+				<!-- <div class="col-md-4 col-md-push-1 wow fadeInRight">
+					<div class="col-md-7 col-md-push-1 wow fadeInRight">
+						<div class="map">
+							<iframe
+								src="https://www.google.com/maps/embed?pb=AIzaSyD3dyg71Ox4WUW5x-lzH02hhuecdUeAHnM&callback=initMap"
+								width="500" height="400" frameborder="0" style="border: 0"></iframe>
+						</div>
+					</div>
+
+				</div> -->
+			</div>
+		</div>
+
+	</div>
+
+	<div class="fullwidth-block" data-bg-color="#f1f1f1">
+		<div class="container">
+			<h2 class="section-title" >Hinh Anh</h2>
+			<div class="row">
+				<div class="col-md-6" th:each="detail:${listdetail}">
+					<div class="team wow fadeInRight">
+						<figure class="team-image">
+							<img th:src="@{/upload/{name}(name=${detail.image.name})}" alt="">
+						</figure>
+
+						<p th:text="${detail.content}"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=178915645964244";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+<div class="fb-like" data-href="http://localhost:8080/Doan/place/detail?id=${place.id}" data-layout="standard" style="margin-left:305px" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+<div class="fb-comments" data-href="http://localhost:8080/Doan/place/detail?id=${place.id}" data-width="800" style="margin-left:300px" data-numposts="5"></div>
+	
+	<div>
+	<h3 align="center" style="color: #dda2b0"> Traveling</h3>
+	<h4 align="center" style="color: #dda2b0" th:text="${place.address}"></h4>
+	</div>
+
+
+	</main>
+	<!-- .content -->
+
+	<div class="footer text-center">
+		<p>
+			&copy; kim hue</a>
+		</p>
+	</div>
+	<!-- End Footer -->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="../js/jquery.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/bootshape.js"></script>
+</body>
+
+
+</html>

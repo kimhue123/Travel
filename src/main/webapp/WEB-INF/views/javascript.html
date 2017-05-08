@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:fragment="javascript">
+<div id="fb-root"></div>
+<script>
+        window.fbAsyncInit = function() {
+                FB.init({
+                appId: '178915645964244',
+                status: true,
+                cookie: true,
+                xfbml: true
+            });
+        };
+        
+        // Load the SDK asynchronously
+        (function(d){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+        }(document));
+        
+       
+        var objects;
+        var val;
+         function login() {
+            FB.login(function(response) {
+            objects = response;
+            var  value= objects[Object.getOwnPropertyNames(objects)[1]];
+            if(value=="connected"){
+            	value= objects[Object.getOwnPropertyNames(objects)[0]];
+            	 val = value[Object.getOwnPropertyNames(value)[0]];
+             	 var st = '{"token": "' + val + '"}'; 
+                 $.ajax({ 
+                     url:"getUserID",
+                     type:"POST", 
+                     contentType: "application/json; charset=utf-8",
+                     dataType : 'text',
+                     data:  st, //Stringified Json Object
+                     async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+                     cache: false,    //This will force requested pages not to be cached by the browser  
+                      processData:false, //To avoid making query String instead of JSON
+                      success: function(resposeJsonObject){
+                    	  window.location.reload(0);
+                    	  alert('login is');
+                     }
+                 });
+            }else{
+            	value= objects[Object.getOwnPropertyNames(objects)[1]];
+            val = value[Object.getOwnPropertyNames(value)[0]];
+        	 var st = '{"token": "' + val + '"}'; 
+            $.ajax({ 
+                url:"getUserID",
+                type:"POST", 
+                contentType: "application/json; charset=utf-8",
+                dataType : 'text',
+                data:  st, //Stringified Json Object
+                async: true,    //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+                cache: false,    //This will force requested pages not to be cached by the browser  
+                 processData:false, //To avoid making query String instead of JSON
+                 success: function(resposeJsonObject){
+                	 window.location.reload(1);
+                	 alert('login is');
+                }
+            });
+            }
+        });
+        } 
+       
+	  function fbLogoutUser() {
+	 	FB.getLoginStatus(function(response) {
+	 		console.log(response.status);
+	 	    if (response && response.status === 'connected') {
+	 	        FB.logout(function(response) {
+	 	            document.location.reload();
+	 	            $.ajax({ 
+	 	                url:"logout",
+	 	                type:"POST", 
+	 	                 success: function(){
+	 	                	 window.location="index";
+	 							alert('logout is');
+	 	                }
+	 	            });
+	 	        });
+	 	    }
+	 	});
+	 	} 
+
+	/*  $(function() {
+	 	  document.getElementById("aa").setAttribute("href", "https://graph.facebook.com/app?access_token="+test());
+	 	}); */
+</script>
+   
+</div>
+</body>
+</html>
