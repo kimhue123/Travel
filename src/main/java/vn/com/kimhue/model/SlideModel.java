@@ -23,8 +23,6 @@ public class SlideModel {
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 	
-	@Column(name = "content", length = 255)
-	private String content;
 	
 	@OneToOne
 	@JoinColumn(name="idImg")

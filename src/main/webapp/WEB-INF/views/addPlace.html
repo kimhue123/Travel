@@ -3,6 +3,9 @@
 <head>
 <title>Home travel</title>
 <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link
 	href='http://fonts.googleapis.com/css?family=Belgrano|Courgette&subset=latin,latin-ext'
 	rel='stylesheet' type='text/css'>
@@ -114,15 +117,15 @@ h3 {
 			<div class="col-md-4 wow fadeInLeft">
 				<form id="add" action="savePlace"  class="contact-form" method="POST" enctype="multipart/form-data">
 					<input id="name" name="name" type="text"
-						placeholder="name place..."> 
+						placeholder="name place..." required="true" > 
 						<select id="select" name="select">
 						<option th:each="category:${category}" th:value="${category.id}" th:text="${category.name}"></option>
 					 </select> 
-					 <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server" > 
+					 <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server" required="true"  > 
 					<input id="submit" type="button" value="Geocode" style=" width: 141px; margin-left: 300px;background-color: aliceblue">
    
     
-					<textarea name="content" id="content" placeholder="detail">
+					<textarea name="content" id="content" placeholder="detail" required="true" >
 					</textarea>
 					<input name="file"  class="filestyle" type="file"
 						required="true" />
@@ -147,7 +150,7 @@ h3 {
 						</div> 
 						<input type="hidden" id="cityLat" name="cityLat" />
 <input type="hidden" id="cityLng" name="cityLng" />
-					<input type="submit"  class="button"  value="Send">
+					<input id="something" type="submit"  class="button"  value="Send">
 					</form>
 				</div>
 				
@@ -206,6 +209,13 @@ h3 {
 		$("[data-toggle='tooltip']").tooltip();
 	});
 </script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	$("#something").click(function() {
+		location.reload();
+	});
+	});
+	</script>
 <script type="text/javascript">
     function initialize() {
         var input = document.getElementById('searchTextField');

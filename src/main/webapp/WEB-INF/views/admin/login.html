@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <link rel="stylesheet" type="text/css" href="../csss/styles.css" media="screen" />
+</head>
+<body>
+<div th:replace="admin/header::header"></div>
+<div class="grid_12">
+
+	<div class="module">
+		<h2>
+			<span>Login</span>
+		</h2>
+			<h3 th:text="${message}"
+				style="color: cornflowerblue; margin-left: 200px;"></h3>
+			<div class="module-body">
+			<form th:action="@{login}" th:object="${user}" method="post">
+				<p>
+					<label>username</label> <input type="text" name="username" value=""
+						class="input-medium" />
+				</p>
+				<p>
+					<label>password</label> <input type="password" name="password"
+						value="" class="input-medium" />
+				</p>
+
+
+
+				<fieldset>
+					<input class="submit-green" name="login" type="submit"
+						value="Đăng nhập" />
+
+				</fieldset>
+			</form>
+		</div>
+		<!-- End .module-body -->
+
+	</div>
+	<!-- End .module -->
+	<div style="clear: both;"></div>
+</div>
+<!-- End .grid_12 -->
+</body>
+</html>

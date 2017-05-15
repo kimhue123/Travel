@@ -29,6 +29,16 @@ public class UserDao {
 	public List<UserModel> getList() {
 		return userRepsitory.findAll();
 	}
+
+	public UserModel getUserByIdFacebook(String idFacebook) {
+		return userRepsitory.getUserByIdFacebook(idFacebook);
+	}
+
+	public UserModel getUserByUsernameAndPassword(String username, String password) {
+		return userRepsitory.getUserByUsernameAndPassword(username,password);
+	}
+
+	
 	
 
 }

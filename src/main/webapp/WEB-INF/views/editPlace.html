@@ -3,6 +3,8 @@
 <head>
 <title>Home travel</title>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="css/bootstrap.css" rel="stylesheet">
 
 <!--Google Fonts-->
@@ -14,7 +16,9 @@
 <!-- Loading main css file -->
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="style.css">
-
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.form.js"></script>
 <!--Bootshape-->
 <link href="css/bootshape.css" rel="stylesheet">
 <style type="text/css">
@@ -114,9 +118,9 @@ h3 {
 					<form id="add" action="edit" class="contact-form"
 						method="POST" enctype="multipart/form-data">
 						<input id="id" name="id" type="hidden" th:value="${place.id}"
-							> 
+							 > 
 						<input id="name" name="name" type="text" th:value="${place.name}"
-							placeholder="name place..."> 
+							placeholder="name place..." required="true" > 
 							<select id="select" name="select">
 							<div th:each="category:${category}">
 								<div th:if="${place.category.id} == ${category.id}">
@@ -131,7 +135,7 @@ h3 {
 							th:value="${place.address}">
 							<input id="submit" type="button" value="Geocode" style=" width: 141px; margin-left: 300px;background-color: aliceblue">
 						<textarea name="content" id="content" th:text="${place.content}"
-							placeholder="detail">
+							placeholder="detail" required="true" >
 					</textarea>
 						<img th:src="@{/upload/{name}(name=${place.image.name})}" alt=""
 							style="width: 440px;"> <input name="file" class="filestyle"
@@ -158,14 +162,14 @@ h3 {
 						<div id="scrollContainer" style="margin-top: 50px;">
 								<h3>Ban muon them hinh anh cua nhom</h3>
 								<div id="inputBox">
-									<div class="row">
+									<!-- <div class="row">
 										<div class="col-md-9">
 											<input style="width: 500px" class="filestyle" type="file"
 												name="files" />
 											<textarea style="margin-top: 10px; width: 500px"
 												name="detail" class="filestyle" value=" "></textarea>
 										</div>
-									</div>
+									</div> -->
 								</div>
 								<div id="formAction">
 									<div class="col-md-3">
@@ -187,7 +191,7 @@ h3 {
 						id="submit" type="button" value="Geocode">
 				</div>
 				 -->
-							
+		
 			<script>
 			function initMap() {
 		        var map = new google.maps.Map(document.getElementById('map'), {
@@ -222,6 +226,21 @@ h3 {
 
 	</main>
 	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#addRow").click(function(){
+			$("#inputBox").append("<div id='inputBox'> <div class='row'><div class='col-md-9'><input name='files' class='filestyle' type='file' required='true'/> <textarea  style='margin-top: 10px' name='detail'  class='filestyle' ></textarea></div></div></div>")
+			$("#inputBox > div:last").append("<div class='col-md-3'></div>");
+			$("#inputBox > div:last > div:last")
+			.append("<button class='btn btn-danger removeBtn' type='button'>Remove</button>");
+			$("#inputBox > div:last > div:last > .removeBtn:first").click(function(){
+				$(this).parent().parent().remove();
+				if($("#inputBox").height()<=166 && $("#inputBox").hasClass("pre-scrollable")) $("#inputBox").removeClass("pre-scrollable");
+			})
+		});
+		$("[data-toggle='tooltip']").tooltip();
+	});
+</script>	
+	<script type="text/javascript">
     function initialize() {
         var input = document.getElementById('searchTextField');
         var autocomplete = new google.maps.places.Autocomplete(input);
@@ -237,7 +256,7 @@ h3 {
     }
     google.maps.event.addDomListener(window, 'load', initialize); 
 </script>
-<div th:replace="javascript::javascript">
+<div th:replace="javascript::javascript"></div>
 </body>
 
 </html>

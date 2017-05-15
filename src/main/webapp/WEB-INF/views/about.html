@@ -1,23 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Home travel</title>
-<meta charset="UTF-8">
-<link href="css/bootstrap.css" rel="stylesheet">
-
-<!--Google Fonts-->
-<link
-	href='http://fonts.googleapis.com/css?family=Belgrano|Courgette&subset=latin,latin-ext'
-	rel='stylesheet' type='text/css'>
-<link href="fonts/font-awesome.min.css" rel="stylesheet"
-	type="text/css">
-<!-- Loading main css file -->
-<link rel="stylesheet" href="css/animate.min.css">
-<link rel="stylesheet" href="style.css">
-
-<!--Bootshape-->
-<link href="css/bootshape.css" rel="stylesheet">
-
+<head th:replace="link::link">
 </head>
 <body>
 <div th:replace="javascript::javascript">
@@ -110,19 +93,41 @@
 		</div>
 	</div>
 	
+	<div th:if="${session.userId!=null}" style="margin-left: 170px; margin-bottom: 50px;width: 130%;">
+		<h3>Do you want report</h3>
+		<form id="report" th:action="@{/report}" th:object="${report}" method="post">
+			<div id="scrollContainer">
+				<div id="inputBox">
+					<div class="row">
+						<div class="col-md-9">
+						<input type="hidden" name="idPlace" th:value="${place.id}" >
+							<textarea
+								style="margin-top: 10px margin-top: 100px; margin-left: 100px; min-height: 100px; resize: vertical; outline: none; width: 50%; padding: 10px 20px; border-radius: 3px; border: 1px solid #f1f1f1; -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); margin-bottom: 10px; font-weight: 300;"
+								th:field="*{content}" class="filestyle" value=" "></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<input type="submit" class="button" value="Send"
+				style="margin-left: 656px;">
+		</form>
+	</div>
 	
+	<script>
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=178915645964244";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
 
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=178915645964244";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
-
-<div class="fb-like" data-href="http://localhost:8080/Doan/place/detail?id=${place.id}" data-layout="standard" style="margin-left:305px" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-<div class="fb-comments" data-href="http://localhost:8080/Doan/place/detail?id=${place.id}" data-width="800" style="margin-left:300px" data-numposts="5"></div>
+<div class="fb-like" data-href="http://localhost:8080/Doan/detail?id=${place.id}" data-layout="standard" style="margin-left:305px" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+<div class="fb-comments" data-href="http://localhost:8080/Doan/detail?id=${place.id}" data-width="800" style="margin-left:300px" data-numposts="5"></div>
 	
 	<div>
 	<h3 align="center" style="color: #dda2b0"> Traveling</h3>

@@ -45,6 +45,10 @@ public class PlaceDao {
 		
 	}
 
+	public List<PlaceModel> getListByIdCategory(int idCat) {
+		return placeRepsitory.getListByIdCategory(idCat);
+	}
+
 	/*public void deleteByIdCat(int id) {
 		placeRepsitory.deleteByIdCat(id);
 		

@@ -19,5 +19,7 @@ public interface PlaceRepsitory extends JpaRepository<PlaceModel, Integer>{
 	List<PlaceModel> getListByIdUser(String userId);
 	/*@Query("delete placeModel from PlaceModel as placeModel where placeModel.category.id =?1")
 	void deleteByIdCat(int id);*/
+	@Query("select placeModel from PlaceModel as placeModel where placeModel.category.id = ?1")
+	List<PlaceModel> getListByIdCategory(int idCat);
 
 }

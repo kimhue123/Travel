@@ -12,23 +12,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import vn.com.kimhue.dao.CategoryDao;
 import vn.com.kimhue.dao.DetailPlaceDao;
 import vn.com.kimhue.dao.ImgDao;
 import vn.com.kimhue.dao.PlaceDao;
+import vn.com.kimhue.dao.ReportDao;
 import vn.com.kimhue.dao.UserDao;
 import vn.com.kimhue.model.CategoryModel;
 import vn.com.kimhue.model.DetailPlaceModel;
 import vn.com.kimhue.model.ImgModel;
 import vn.com.kimhue.model.PlaceModel;
+import vn.com.kimhue.model.ReportModel;
 import vn.com.kimhue.model.UserModel;
 
 @Controller
@@ -43,9 +44,12 @@ public class PlaceController {
 	private ImgDao imgDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private ReportDao reportDao;
 
 	@RequestMapping(value = "/detail")
-	public String detailPlace(Model model, @RequestParam(name = "id") int id) {
+	public String detailPlace(Model model, @RequestParam(name = "id") int id,
+			@ModelAttribute("report") ReportModel report) {
 		PlaceModel place = placeDao.getPlaceById(id);
 		List<DetailPlaceModel> detailPlace = placeDao.getListDetailPlaceByIdPlace(id);
 		model.addAttribute("place", place);
@@ -67,6 +71,14 @@ public class PlaceController {
 
 	}
 
+	private String getResourceDir() {
+		File file = new File(this.getClass().getClassLoader().getResource("").getPath().replace("WEB-INF/classes/", ""));
+		file = new File(file, "/WEB-INF/resources/upload/");
+		if (!file.isDirectory())
+			file.mkdirs();
+		return file.getAbsolutePath();
+	}
+
 	@RequestMapping(value = "/savePlace", method = RequestMethod.POST)
 	public String savePlace(@RequestParam("name") String name, @RequestParam("address") String address,
 			@RequestParam("select") int idCategory, @RequestParam("content") String content,
@@ -81,11 +93,12 @@ public class PlaceController {
 		DetailPlaceModel detail;
 		int count = 0;
 		ImgModel imgg;
+		String resourceDir = getResourceDir();
 		try {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			filename = file.getOriginalFilename() + "1" + System.nanoTime();
-			Path path = Paths.get("E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/" + filename);
+			Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -113,8 +126,7 @@ public class PlaceController {
 				try {
 					byte[] bytes = file1.getBytes();
 					String namepicture = file1.getOriginalFilename() + System.nanoTime();
-					Path path = Paths
-							.get("E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/" + namepicture);
+					Path path = Paths.get(new File(resourceDir, namepicture).getAbsolutePath());
 					Files.write(path, bytes);
 					imgg = new ImgModel(0, namepicture);
 					imgDao.uploadImg(imgg);
@@ -143,14 +155,8 @@ public class PlaceController {
 			List<CategoryModel> categoryList = categoryDao.getList();
 			PlaceModel place = placeDao.getPlaceById(id);
 			List<DetailPlaceModel> detailPlace = placeDao.getListDetailPlaceByIdPlace(id);
-			if (detailPlace.isEmpty()) {
-				detailPlace.add(0, new DetailPlaceModel(1, "xxxx"));
-				model.addAttribute("listdetailempty", detailPlace);
-			} else {
-				model.addAttribute("listdetail", detailPlace);
-			}
+			model.addAttribute("listdetail", detailPlace);
 			model.addAttribute("place", place);
-
 			model.addAttribute("category", categoryList);
 			return "editPlace";
 		} else {
@@ -178,11 +184,12 @@ public class PlaceController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String editPlace(@RequestParam(name = "id") int id, @RequestParam("name") String name,
 			@RequestParam("address") String address, @RequestParam("select") int idCategory,
-			@RequestParam("content") String content, @RequestParam("detailOld") ArrayList<String> detailListOld,
+			@RequestParam("content") String content,
+			@RequestParam(name = "detailOld", required = false) ArrayList<String> detailListOld,
 			@RequestParam("fileOld") ArrayList<MultipartFile> filesOld,
-			@RequestParam("detail") ArrayList<String> detailList, @RequestParam("files") ArrayList<MultipartFile> files,
-			@RequestParam("file") MultipartFile file, @RequestParam("lat") String lat, @RequestParam("lng") String lng,
-			HttpServletRequest request) {
+			@RequestParam(name = "detail", required = false) ArrayList<String> detailList,
+			@RequestParam("files") ArrayList<MultipartFile> files, @RequestParam("file") MultipartFile file,
+			@RequestParam("lat") String lat, @RequestParam("lng") String lng, HttpServletRequest request) {
 		PlaceModel place = placeDao.getPlaceById(id);
 		List<DetailPlaceModel> detailPlace = placeDao.getListDetailPlaceByIdPlace(id);
 		String filename = "";
@@ -190,9 +197,10 @@ public class PlaceController {
 		int countNew = 0;
 		int countOld = 0;
 		ImgModel imgg;
+		String resourceDir = getResourceDir();
 		ImgModel img = place.getImage();
 		if (!file.isEmpty()) {
-			String pathOld = "E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/"
+			String pathOld = resourceDir+"/"
 					+ place.getImage().getName();
 			File fileOld = new File(pathOld);
 			if (fileOld.exists()) {
@@ -202,7 +210,7 @@ public class PlaceController {
 				// Get the file and save it somewhere
 				byte[] bytes = file.getBytes();
 				filename = file.getOriginalFilename() + "1" + System.nanoTime();
-				Path path = Paths.get("E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/" + filename);
+				Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
 				Files.write(path, bytes);
 
 			} catch (IOException e) {
@@ -230,38 +238,39 @@ public class PlaceController {
 		placeModel.setUser(place.getUser());
 		placeDao.save(placeModel);
 		if (placeModel != null) {
-			if (detailListOld.size() > 0) {
-				for (int i = 0; i < filesOld.size(); i++) {
-					detail = detailPlace.get(countOld);
-					if (!filesOld.get(i).isEmpty()) {
-						imgg = detail.getImage();
-						String pathOld = "E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/"
-								+ imgg.getName();
-						File fileOld = new File(pathOld);
-						if (fileOld.exists()) {
-							fileOld.delete();
+			if (detailListOld != null) {
+				if (detailListOld.size() > 0) {
+					for (int i = 0; i < filesOld.size(); i++) {
+						detail = detailPlace.get(countOld);
+						if (!filesOld.get(i).isEmpty()) {
+							imgg = detail.getImage();
+							String pathOld = resourceDir+"/"
+									+ imgg.getName();
+							File fileOld = new File(pathOld);
+							if (fileOld.exists()) {
+								fileOld.delete();
+							}
+							try {
+								byte[] bytes = filesOld.get(countOld).getBytes();
+								String namepicture = filesOld.get(countOld).getOriginalFilename() + System.nanoTime();
+								Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
+								Files.write(path, bytes);
+								imgg.setName(namepicture);
+								imgDao.uploadImg(imgg);
+								detail.setImage(imgg);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
-						try {
-							byte[] bytes = filesOld.get(countOld).getBytes();
-							String namepicture = filesOld.get(countOld).getOriginalFilename() + System.nanoTime();
-							Path path = Paths.get(
-									"E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/" + namepicture);
-							Files.write(path, bytes);
-							imgg.setName(namepicture);
-							imgDao.uploadImg(imgg);
-							detail.setImage(imgg);
-						} catch (IOException e) {
-							e.printStackTrace();
+						String detailL = "";
+						if (detailListOld.size() > countOld) {
+							detailL = detailListOld.get(countOld).toString();
 						}
+						detail.setContent(detailL);
+						detail.setPlace(placeModel);
+						detailPlaceDao.save(detail);
+						countOld++;
 					}
-					String detailL = "";
-					if (detailListOld.size() > countOld) {
-						detailL = detailListOld.get(countOld).toString();
-					}
-					detail.setContent(detailL);
-					detail.setPlace(placeModel);
-					detailPlaceDao.save(detail);
-					countOld++;
 				}
 			}
 			for (MultipartFile file1 : files) {
@@ -271,8 +280,7 @@ public class PlaceController {
 				try {
 					byte[] bytes = file1.getBytes();
 					String namepicture = file1.getOriginalFilename() + System.nanoTime();
-					Path path = Paths
-							.get("E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/" + namepicture);
+					Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
 					Files.write(path, bytes);
 					imgg = new ImgModel(0, namepicture);
 					imgDao.uploadImg(imgg);
@@ -297,21 +305,34 @@ public class PlaceController {
 	public String deletePlace(@RequestParam(name = "id") int id) {
 		PlaceModel place = placeDao.getPlaceById(id);
 		List<DetailPlaceModel> detailPlace = placeDao.getListDetailPlaceByIdPlace(id);
+		String resourceDir = getResourceDir();
 		for (DetailPlaceModel detail : detailPlace) {
-			String pathOld = "E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/"
+			String pathOld = resourceDir+"/"
 					+ detail.getImage().getName();
 			File file = new File(pathOld);
 			if (file.exists()) {
 				file.delete();
 			}
 		}
-		String pathOld = "E:/spring/workspase/Doan/src/main/webapp/WEB-INF/resources/upload/"
-				+ place.getImage().getName();
+		String pathOld = resourceDir + place.getImage().getName();
 		File file = new File(pathOld);
 		if (file.exists()) {
 			file.delete();
 		}
 		placeDao.deletePlaceById(id);
 		return "redirect:/manager";
+	}
+
+	@RequestMapping(value = "/report", method = RequestMethod.POST)
+	public String formReport(Model model, @ModelAttribute("report") ReportModel report, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String idFacebook = (String) session.getAttribute("userId");
+
+		if (idFacebook != null) {
+			UserModel user = userDao.getUserByIdFacebook(idFacebook);
+			report.setIdUser(user.getId());
+			reportDao.save(report);
+		}
+		return "redirect:/index";
 	}
 }
