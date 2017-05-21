@@ -2489,6 +2489,9 @@ fieldset[disabled] .btn-danger.active {
   color: #ffffff;
   background-color: #5cb85c;
   border-color: #4cae4c;
+   margin-left: 320px;
+    width: 85px;
+    height: 35px;
 }
 
 .btn-success:hover,
@@ -2499,6 +2502,9 @@ fieldset[disabled] .btn-danger.active {
   color: #ffffff;
   background-color: #47a447;
   border-color: #398439;
+  margin-left: 320px;
+    width: 85px;
+    height: 35px;
 }
 
 .btn-success:active,

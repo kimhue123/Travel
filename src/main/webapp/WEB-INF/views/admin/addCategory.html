@@ -10,7 +10,7 @@
 	<div class="grid_12">
 
 	<div class="module">
-		 <h2><span>Thêm Danh mục</span></h2>
+		 <h2><span>add</span></h2>
 			
 		 <div class="module-body">
 			<form th:action="@{addCat}" th:object="${category}" method="post">
@@ -19,11 +19,11 @@
 					<input type="text" th:field="*{name}" value=""  />
 				</p>
 				<p>
-					<label>Mô tả</label>
+					<label>describe</label>
 					<textarea name="content" value="" rows="7" cols="90" class="input-medium"></textarea>
 				</p>
 				<fieldset>
-					<input class="submit-green" type="submit" value="Thêm" /> 
+					<input class="submit-green" type="submit" value="send" /> 
 				</fieldset>
 				
 			</form>

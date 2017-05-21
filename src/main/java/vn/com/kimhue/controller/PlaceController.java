@@ -253,7 +253,7 @@ public class PlaceController {
 							try {
 								byte[] bytes = filesOld.get(countOld).getBytes();
 								String namepicture = filesOld.get(countOld).getOriginalFilename() + System.nanoTime();
-								Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
+								Path path = Paths.get(new File(resourceDir, namepicture).getAbsolutePath());
 								Files.write(path, bytes);
 								imgg.setName(namepicture);
 								imgDao.uploadImg(imgg);
@@ -280,7 +280,7 @@ public class PlaceController {
 				try {
 					byte[] bytes = file1.getBytes();
 					String namepicture = file1.getOriginalFilename() + System.nanoTime();
-					Path path = Paths.get(new File(resourceDir, filename).getAbsolutePath());
+					Path path = Paths.get(new File(resourceDir, namepicture).getAbsolutePath());
 					Files.write(path, bytes);
 					imgg = new ImgModel(0, namepicture);
 					imgDao.uploadImg(imgg);

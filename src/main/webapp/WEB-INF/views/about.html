@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head th:replace="link::link">
 </head>
-<body>
-<div th:replace="javascript::javascript">
 
+<body>
+<div id="fb-root"></div>
+
+<script>
+		(function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id))
+				return;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=178915645964244";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+	</script>
+<div th:replace="javascript::javascript">
 </div>
 <div th:replace="header::header"></div>
 	<main class="content">
@@ -37,9 +51,9 @@
 				<script>
 					function initMap() {
 						var lat = document.getElementById('lat').value;
-						var latn = parseInt(lat);
+						var latn = parseFloat(lat);
 						var lng = document.getElementById('lng').value;
-						var lngn = parseInt(lng);
+						var lngn = parseFloat(lng);
 						console.log(lngn)
 						var uluru = {
 							lat : latn,
@@ -78,7 +92,7 @@
 
 	<div class="fullwidth-block" data-bg-color="#f1f1f1">
 		<div class="container">
-			<h2 class="section-title" >Hinh Anh</h2>
+			<h2 class="section-title" >album</h2>
 			<div class="row">
 				<div class="col-md-6" th:each="detail:${listdetail}">
 					<div class="team wow fadeInRight">
@@ -94,7 +108,7 @@
 	</div>
 	
 	<div th:if="${session.userId!=null}" style="margin-left: 170px; margin-bottom: 50px;width: 130%;">
-		<h3>Do you want report</h3>
+		<h3>Do you want report ?</h3>
 		<form id="report" th:action="@{/report}" th:object="${report}" method="post">
 			<div id="scrollContainer">
 				<div id="inputBox">
@@ -113,21 +127,9 @@
 		</form>
 	</div>
 	
-	<script>
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id))
-				return;
-			js = d.createElement(s);
-			js.id = id;
-			js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=178915645964244";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
-
-
-<div class="fb-like" data-href="http://localhost:8080/Doan/detail?id=${place.id}" data-layout="standard" style="margin-left:305px" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-<div class="fb-comments" data-href="http://localhost:8080/Doan/detail?id=${place.id}" data-width="800" style="margin-left:300px" data-numposts="5"></div>
+	
+ <div class="fb-like" th:attr="data-href='http://sontx.ddns.net:8080/Doan/detail?id='+${place.id}"  data-layout="standard" style="margin-left:305px" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> 
+<div class="fb-comments" th:attr="data-href='http://sontx.ddns.net:8080/Doan/detail?id='+${place.id}" data-width="800" style="margin-left:300px" data-numposts="5"></div>
 	
 	<div>
 	<h3 align="center" style="color: #dda2b0"> Traveling</h3>
@@ -140,16 +142,17 @@
 
 	<div class="footer text-center">
 		<p>
-			&copy; kim hue</a>
+			&copy: copy kim hue</a>
 		</p>
 	</div>
 	<!-- End Footer -->
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="../js/jquery.js"></script>
+	<script src="js/jquery.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/bootshape.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootshape.js"></script>
+	
 </body>
 
 

@@ -35,7 +35,8 @@
 }
 
 #scrollContainer {
-	padding: 20px;
+	/* padding: 20px; */
+	margin-top: 50px;
 }
 
 #inputBox {
@@ -43,7 +44,7 @@
 }
 
 #inputBox>div.row {
-	margin: 10px 0;
+	/* margin: 10px 0; */
 }
 
 #formAction {
@@ -118,7 +119,7 @@ h3 {
 					<form id="add" action="edit" class="contact-form"
 						method="POST" enctype="multipart/form-data">
 						<input id="id" name="id" type="hidden" th:value="${place.id}"
-							 > 
+							> 
 						<input id="name" name="name" type="text" th:value="${place.name}"
 							placeholder="name place..." required="true" > 
 							<select id="select" name="select">
@@ -140,7 +141,7 @@ h3 {
 						<img th:src="@{/upload/{name}(name=${place.image.name})}" alt=""
 							style="width: 440px;"> <input name="file" class="filestyle"
 							type="file"  />
-						<h3>Album</h3>
+						<h3>album</h3>
 
 						<div class="row" style="width: 1200px;">
 							<div class="col-md-6" th:each="detail:${listdetail}">
@@ -160,7 +161,7 @@ h3 {
 							</div>
 						</div>
 						<div id="scrollContainer" style="margin-top: 50px;">
-								<h3>Ban muon them hinh anh cua nhom</h3>
+								<h3>do you want to add photos to the album ?</h3>
 								<div id="inputBox">
 									<!-- <div class="row">
 										<div class="col-md-9">
@@ -173,7 +174,7 @@ h3 {
 								</div>
 								<div id="formAction">
 									<div class="col-md-3">
-										<button style="width: 100px" class="btn btn-success"
+										<button  class="btn btn-success"
 											id="addRow" type="button">Add</button>
 									</div>
 								</div>
@@ -185,7 +186,11 @@ h3 {
 				</div>
 				<div id="map"></div>
 			</div>
-
+<div class="footer text-center">
+		<p>
+			&copy: copy kim hue </a>
+		</p>
+	</div>
 			<!-- <div id="floating-panel">
 					<input id="address" type="textbox" value="Sydney, NSW"> <input
 						id="submit" type="button" value="Geocode">
@@ -194,15 +199,25 @@ h3 {
 		
 			<script>
 			function initMap() {
-		        var map = new google.maps.Map(document.getElementById('map'), {
-		          zoom: 8,
-		          center: {lat: -34.397, lng: 150.644}
-		        });
-		        var geocoder = new google.maps.Geocoder();
-
-		        document.getElementById('submit').addEventListener('click', function() {
-		        	geocodeAddress(geocoder, map);
-		        });
+				var lat = document.getElementById('lat').value;
+				var latn = parseInt(lat);
+				var lng = document.getElementById('lng').value;
+				var lngn = parseInt(lng);
+				console.log(lngn)
+				var uluru = {
+					lat : latn,
+					lng : lngn
+				};
+				console.log(uluru);
+				var map = new google.maps.Map(document
+						.getElementById('map'), {
+					zoom : 4,
+					center : uluru
+				});
+				var marker = new google.maps.Marker({
+					position : uluru,
+					map : map
+				});
 		      }
 			
 			function geocodeAddress(geocoder, resultsMap) {
@@ -231,7 +246,7 @@ h3 {
 			$("#inputBox").append("<div id='inputBox'> <div class='row'><div class='col-md-9'><input name='files' class='filestyle' type='file' required='true'/> <textarea  style='margin-top: 10px' name='detail'  class='filestyle' ></textarea></div></div></div>")
 			$("#inputBox > div:last").append("<div class='col-md-3'></div>");
 			$("#inputBox > div:last > div:last")
-			.append("<button class='btn btn-danger removeBtn' type='button'>Remove</button>");
+			.append("<button class='btn btn-danger removeBtn' type='button'>X</button>");
 			$("#inputBox > div:last > div:last > .removeBtn:first").click(function(){
 				$(this).parent().parent().remove();
 				if($("#inputBox").height()<=166 && $("#inputBox").hasClass("pre-scrollable")) $("#inputBox").removeClass("pre-scrollable");

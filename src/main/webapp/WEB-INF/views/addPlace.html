@@ -19,6 +19,7 @@
 <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/jquery.form.js"></script>
+<script type ="text/javascript" src ="js/jquery.validate.js"></script>
 <style type="text/css">
 #title h4 {
 	padding: 5px;
@@ -33,7 +34,8 @@
 }
 
 #scrollContainer {
-	padding: 20px;
+    margin-top: 50px;
+	/* padding: 20px; */
 }
 
 #inputBox {
@@ -41,7 +43,7 @@
 }
 
 #inputBox>div.row {
-	margin: 10px 0;
+	/* margin: 10px 0; */
 }
 
 #formAction {
@@ -65,6 +67,7 @@ button {
 
 h3 {
 	color: #c78a78;
+	margin-top: 30px;
 }
 #map {
 	margin-top: 50px;
@@ -75,9 +78,45 @@ h3 {
 </style>
 
 <!--Google Fonts-->
-
+<!-- <script type="text/javascript">
+	$(document).ready(function(){
+		$("#add").validate({
+			ignore: [],
+			rules:{
+				name:{
+					required: true
+				},
+				address:{
+					required: true
+				},
+				content:{
+					required: true
+				},
+				file:{
+					required: true
+				}
+			},
+			message: {
+				name:{
+					required: "please input  name"
+				},
+				address:{
+					required: "please input address"
+				},
+				content:{
+					required: "please input content"
+				},
+				file:{
+					required: "please input file"
+				}
+				
+			}
+		});
+	});
+</script> -->
 <script>
-	function add(){
+	
+	/* function add(){
 		$("form#add").submit(function(){
 		    var formData = new FormData($(this)[0]);
 		    $.ajax({
@@ -100,7 +139,7 @@ h3 {
 
 		    return false;
 		});
-	}
+	} */
 </script>
 </head>
 <body>
@@ -117,19 +156,19 @@ h3 {
 			<div class="col-md-4 wow fadeInLeft">
 				<form id="add" action="savePlace"  class="contact-form" method="POST" enctype="multipart/form-data">
 					<input id="name" name="name" type="text"
-						placeholder="name place..." required="true" > 
+						placeholder="name place..." required> 
 						<select id="select" name="select">
 						<option th:each="category:${category}" th:value="${category.id}" th:text="${category.name}"></option>
 					 </select> 
-					 <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server" required="true"  > 
+					 <input id="searchTextField" name="address" type="text"  size="50" placeholder="Enter a location" autocomplete="on" runat="server" required="true" > 
 					<input id="submit" type="button" value="Geocode" style=" width: 141px; margin-left: 300px;background-color: aliceblue">
    
     
 					<textarea name="content" id="content" placeholder="detail" required="true" >
 					</textarea>
-					<input name="file"  class="filestyle" type="file"
+					<input name="file" id="file" class="filestyle" type="file"
 						required="true" />
-					 <h3>Do you want create album</h3>
+					 <h3>Do you want create album ?</h3>
 					
 						<div id="scrollContainer">
 							 <div id="inputBox">
@@ -150,13 +189,17 @@ h3 {
 						</div> 
 						<input type="hidden" id="cityLat" name="cityLat" />
 <input type="hidden" id="cityLng" name="cityLng" />
-					<input id="something" type="submit"  class="button"  value="Send">
+					<input  type="submit"  class="button"   value="Send">
 					</form>
 				</div>
 				
 			<div id="map"></div>
 		</div>
-
+<div class="footer text-center">
+		<p>
+			&copy: copy kim hue </a>
+		</p>
+	</div>
 		 
     <script>
       function initMap() {
@@ -200,7 +243,7 @@ h3 {
 			$("#inputBox").append("<div id='inputBox'> <div class='row'><div class='col-md-9'><input name='files' class='filestyle' type='file' required='true'/> <textarea  style='margin-top: 10px' name='detail'  class='filestyle' ></textarea></div></div></div>")
 			$("#inputBox > div:last").append("<div class='col-md-3'></div>");
 			$("#inputBox > div:last > div:last")
-			.append("<button class='btn btn-danger removeBtn' type='button'>Remove</button>");
+			.append("<button class='btn btn-danger removeBtn' type='button'>X</button>");
 			$("#inputBox > div:last > div:last > .removeBtn:first").click(function(){
 				$(this).parent().parent().remove();
 				if($("#inputBox").height()<=166 && $("#inputBox").hasClass("pre-scrollable")) $("#inputBox").removeClass("pre-scrollable");

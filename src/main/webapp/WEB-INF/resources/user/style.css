@@ -840,6 +840,7 @@ table {
 .contact-form input[type="submit"] {
   float: right;
   padding: 15px 30px;
+  margin-top: 100px;
 }
 
 .map {
@@ -2386,6 +2387,7 @@ figure {
 figure img {
   display: block;
   width: 650px;
+      height: 430px;
 }
 
 .site-footer {

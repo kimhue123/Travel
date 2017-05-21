@@ -34,41 +34,52 @@ public class PlaceModel {
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	@Column(name = "name", length = 100, nullable = false)
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	@Column(name = "content", length = 255, nullable = false)
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	@Column(name = "address", length = 255, nullable = false)
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	@Column(name = "lat", length = 255, nullable = false)
 	public float getLat() {
 		return lat;
 	}
+
 	public void setLat(float lat) {
 		this.lat = lat;
 	}
+
 	@Column(name = "lng", length = 255, nullable = false)
 	public float getLng() {
 		return lng;
 	}
+
 	public void setLng(float lng) {
 		this.lng = lng;
 	}

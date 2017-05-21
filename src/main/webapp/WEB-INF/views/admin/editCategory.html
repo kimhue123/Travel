@@ -10,7 +10,7 @@
 	<div class="grid_12">
 
 	<div class="module">
-		 <h2><span>sưa danh mục</span></h2>
+		 <h2><span>Edit category</span></h2>
 			
 		 <div class="module-body">
 			<form th:action="@{editCat}" th:object="${category}" method="post">
@@ -19,7 +19,7 @@
 					<input type="text" th:field="*{name}" th:value="${category.name}"  />
 				</p>
 				<p>
-					<label>Mô tả</label>
+					<label>describe</label>
 					<textarea name="content" th:value="${category.content}" rows="7" cols="90" class="input-medium"></textarea>
 				</p>
 				<fieldset>

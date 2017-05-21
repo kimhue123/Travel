@@ -2,6 +2,8 @@ package vn.com.kimhue.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,5 +23,9 @@ public interface PlaceRepsitory extends JpaRepository<PlaceModel, Integer>{
 	void deleteByIdCat(int id);*/
 	@Query("select placeModel from PlaceModel as placeModel where placeModel.category.id = ?1")
 	List<PlaceModel> getListByIdCategory(int idCat);
+	/*@Query("select placeModel from PlaceModel as placeModel ")
+	List<PlaceModel> getList(int offset, int row_count);*/
+	@Query("select placeModel from PlaceModel as placeModel where placeModel.category.id = ?1")
+	Page<PlaceModel> getPageByIdCategory(int idCat);
 
 }

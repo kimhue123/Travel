@@ -11,7 +11,7 @@
 	  <!-- Button -->
 	  <div class="float-left">
 		  <a href="addCat" class="button">
-			<span>Thêm tin <img src="../images/plus-small.gif" alt="Thêm danh mục"></span>
+			<span>add category <img src="../images/plus-small.gif" alt="add"></span>
 		  </a>
 	  </div>
 	  <div class="clear"></div>
@@ -20,7 +20,7 @@
 <div class="grid_12">
 	<!-- Example table -->
 	<div class="module">
-		<h2><span>Danh sách Danh mục</span></h2>
+		<h2><span>view list category</span></h2>
 		
 		<div class="module-table-body">
 			<form action="">
@@ -29,8 +29,8 @@
 					<tr>
 						<th style="width:4%; text-align: center;">ID</th>
 						<th style="width:20%">name</th>
-						<th style="width:16%; text-align: center;">Content</th>
-						<th style="width:11%; text-align: center;">Chức năng</th>
+						<th style="width:16%; text-align: center;">describe</th>
+						<th style="width:11%; text-align: center;">function</th>
 					</tr>
 				</thead>
 				<tbody th:each="cat:${list}">
