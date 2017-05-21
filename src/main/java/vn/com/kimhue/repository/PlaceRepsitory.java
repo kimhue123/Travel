@@ -25,7 +25,6 @@ public interface PlaceRepsitory extends JpaRepository<PlaceModel, Integer>{
 	List<PlaceModel> getListByIdCategory(int idCat);
 	/*@Query("select placeModel from PlaceModel as placeModel ")
 	List<PlaceModel> getList(int offset, int row_count);*/
-	@Query("select placeModel from PlaceModel as placeModel where placeModel.category.id = ?1")
-	Page<PlaceModel> getPageByIdCategory(int idCat);
+	
 
 }

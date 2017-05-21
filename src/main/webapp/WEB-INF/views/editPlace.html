@@ -200,9 +200,9 @@ h3 {
 			<script>
 			function initMap() {
 				var lat = document.getElementById('lat').value;
-				var latn = parseInt(lat);
+				var latn = parseFloat(lat);
 				var lng = document.getElementById('lng').value;
-				var lngn = parseInt(lng);
+				var lngn = parseFloat(lng);
 				console.log(lngn)
 				var uluru = {
 					lat : latn,
@@ -218,8 +218,8 @@ h3 {
 					position : uluru,
 					map : map
 				});
-		      }
-			
+			}
+		</script>
 			function geocodeAddress(geocoder, resultsMap) {
 		        var address = document.getElementById('searchTextField').value;
 		        geocoder.geocode({'address': address}, function(results, status) {
